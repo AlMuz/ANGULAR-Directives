@@ -1,6 +1,7 @@
 import {
   Directive,
   ElementRef,
+  HostBinding,
   HostListener,
   Input,
   Renderer2,
@@ -17,6 +18,8 @@ export class StyleDirective {
     borderRadius?: string;
   };
 
+  @HostBinding('style.color') elColor = null;
+
   constructor(private el: ElementRef, private r: Renderer2) {}
 
   @HostListener('click', ['$event']) onClick(event: Event) {
@@ -24,7 +27,7 @@ export class StyleDirective {
   }
 
   @HostListener('mouseenter') onEnter() {
-    this.r.setStyle(this.el.nativeElement, 'color', this.color);
+    this.elColor = this.color;
     this.r.setStyle(this.el.nativeElement, 'border', this.dStyles.border);
     this.r.setStyle(
       this.el.nativeElement,
@@ -39,7 +42,7 @@ export class StyleDirective {
   }
 
   @HostListener('mouseleave') onLeave() {
-    this.r.setStyle(this.el.nativeElement, 'color', null);
+    this.elColor = null;
     this.r.setStyle(this.el.nativeElement, 'border', null);
     this.r.setStyle(this.el.nativeElement, 'fontWeight', null);
     this.r.setStyle(this.el.nativeElement, 'borderRadius', null);
